@@ -1,0 +1,71 @@
+<html>
+    <head>
+        <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/css/materialize.min.css">
+        <script type="text/javascript" src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.100.2/js/materialize.min.js"></script>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <meta charset="utf-8">
+
+        <title>Angeryify</title>
+    </head>
+    <body>
+        <nav>
+            <div class="nav-wrapper container"><a id="logo-container" href="#" class="brand-logo">😠 angeryifier 😡</div>
+        </nav>
+        <div class="section no-pad-bot" id="index-banner">
+            <div class="container">
+                <h5 class="header light center">Send your secret messages in angery binary</h5>
+            </div>
+            <div class="row center">
+                <div class="input-field col s12 m6">
+                    <textarea id="textInput" class="materialize-textarea"></textarea>
+                    <label for="textInput">Text</label>
+                </div>
+                <div class="input-field col s12 m6">
+                    <textarea id="angeryInput" class="materialize-textarea"></textarea>
+                    <label for="angeryInput">Angery Binary</label>
+                </div>
+            </div>
+        </div>
+        
+        <script>
+            var padder = "😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠😠";
+
+            $('#textInput').bind('input propertychange', function() {
+                var input = $('#textInput').val();
+
+                $('#angeryInput').trigger('focus');
+                $('#textInput').trigger('focus');
+                $('#angeryInput').val(
+                    input.split('').map(c => c.charCodeAt(0).toString(2))
+                                   .map(b => b.split('')
+                                       .map(b => b == '1' ? "😡" : "😠")
+                                       .join('')
+                                   )
+                                   .map(b => padder.substring(0, padder.length - b.length) + b)
+                                   .join('')
+                );
+            });
+
+            $('#angeryInput').bind('input propertychange', function() {
+                var input = [...$('#angeryInput').val()]
+                            .map(c => c == '😡' ? '1' : '0');
+                
+                var inputGroups = []
+
+                while (input.length > 0)
+                    inputGroups.push(input.splice(0, 16))
+
+                $('#textInput').val(
+                    inputGroups.map(b => parseInt(b.join(''), 2))
+                               .map(n => String.fromCharCode(n))
+                               .join('')
+                );
+
+                $('#textInput').trigger('focus');
+                $('#angeryInput').trigger('focus');
+            });
+        </script>
+    </body>
+</html>
